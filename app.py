@@ -12,29 +12,27 @@ st.set_page_config(
 )
 
 # --- Session State Initialization ---
-# Initialize session state variables to ensure they persist across pages
 if 'job_description' not in st.session_state:
     st.session_state.job_description = ""
+if 'job_skills' not in st.session_state:
+    st.session_state.job_skills = []
 if 'results_df' not in st.session_state:
     st.session_state.results_df = None
 if 'analysis_done' not in st.session_state:
     st.session_state.analysis_done = False
 
 # --- UI Components ---
-st.title("🤖 AI-Powered Resume Matcher")
+st.title("🤖 AI-Powered Intelligent Resume Matcher")
 st.markdown("""
-Welcome to the future of recruitment! This application leverages AI to intelligently analyze, rank, and match candidate resumes against your job descriptions.
-
-**How to get started:**
-1.  Paste the job description in the text area below.
-2.  Upload one or more candidate resumes (PDF or DOCX).
-3.  Click the 'Analyze Resumes' button to process the files.
-4.  Navigate to the 'Dashboard' page from the sidebar to view the detailed results.
+This tool intelligently analyzes, ranks, and matches resumes against your job descriptions.
+The analysis is now **dynamic**: it will identify required skills directly from the job description you provide.
 """)
 st.divider()
 
 # Input fields for job description and resume uploads
 job_description_input = st.text_area("Enter the Job Description Here:", height=250, key="jd_input")
+additional_skills_input = st.text_input("Enter Additional Skills (comma-separated)", placeholder="e.g., SwiftUI, Kotlin, Jetpack Compose")
+
 uploaded_files = st.file_uploader(
     "Upload Candidate Resumes (PDF or DOCX)",
     type=["pdf", "docx"],
@@ -48,23 +46,36 @@ if st.button("Analyze Resumes", type="primary", use_container_width=True):
     elif not uploaded_files:
         st.warning("Please upload at least one resume.")
     else:
-        with st.spinner("Analyzing... Please wait."):
+        with st.spinner("Analyzing... This may take a moment."):
             # Store job description in session state
             st.session_state.job_description = job_description_input
             
-            # Process each uploaded file
+            # --- DYNAMIC SKILL LOGIC ---
+            # 1. Extract skills from the job description text
+            jd_skills = set(extract_skills(st.session_state.job_description))
+            
+            # 2. Add skills from the manual input box
+            if additional_skills_input:
+                manual_skills = {skill.strip().lower() for skill in additional_skills_input.split(',')}
+                jd_skills.update(manual_skills)
+            
+            st.session_state.job_skills = sorted(list(jd_skills)) # Store the final list of skills to check
+            
+            if not st.session_state.job_skills:
+                st.warning("Could not identify any skills in the job description. Please add some in the 'Additional Skills' box.")
+                st.stop()
+
+            # Process each uploaded file against the dynamic skill list
             results = []
             for file in uploaded_files:
-                # Extract text from resume
                 resume_text = extract_text_from_file(file)
                 
-                # Extract skills from job description and resume
-                jd_skills = extract_skills(st.session_state.job_description)
+                # Extract skills found in the resume
                 resume_skills = extract_skills(resume_text)
                 
-                # Find matching and missing skills
-                matching_skills = list(set(jd_skills) & set(resume_skills))
-                missing_skills = list(set(jd_skills) - set(resume_skills))
+                # Compare against the dynamically generated list of job skills
+                matching_skills = list(st.session_state.job_skills & set(resume_skills))
+                missing_skills = list(set(st.session_state.job_skills) - set(resume_skills))
                 
                 # Calculate match score
                 match_score = calculate_similarity(resume_text, st.session_state.job_description)
@@ -80,12 +91,12 @@ if st.button("Analyze Resumes", type="primary", use_container_width=True):
                     "Match Score": match_score,
                     "Matching Skills": matching_skills,
                     "Missing Skills": missing_skills,
-                    "Resume Text": resume_text, # Store for detailed view
+                    "Resume Text": resume_text,
                 })
             
-            # Create DataFrame and store in session state
             st.session_state.results_df = pd.DataFrame(results)
             st.session_state.analysis_done = True
             
         st.success("Analysis Complete! ✅")
+        st.info(f"Analyzed against these skills: {', '.join(st.session_state.job_skills)}")
         st.info("Navigate to the 'Dashboard' page from the sidebar to see the results.")
