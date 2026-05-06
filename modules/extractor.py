@@ -1,9 +1,9 @@
 import re
 import spacy
 import docx
-import fitz  # PyMuPDF
+import fitz  
 
-# Load the spaCy model. It's better to load it once and reuse it.
+# Load the spaCy model once
 try:
     nlp = spacy.load("en_core_web_sm")
 except OSError:
@@ -11,8 +11,7 @@ except OSError:
     spacy.cli.download("en_core_web_sm")
     nlp = spacy.load("en_core_web_sm")
     
-# --- A predefined list of technical skills for better extraction ---
-# You can expand this list with more skills relevant to your industry
+#  A predefined list of technical skills for better extraction 
 SKILLS_DB = [
     'python', 'java', 'c++', 'javascript', 'typescript', 'sql', 'nosql', 'git', 'docker', 'kubernetes', 'aws',
     'azure', 'gcp', 'react', 'angular', 'vue', 'django', 'flask', 'fastapi', 'spring boot', 'node.js',
