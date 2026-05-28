@@ -3,7 +3,6 @@ import pandas as pd
 from modules.extractor import extract_text_from_file, extract_contact_info, extract_skills
 from modules.utils import calculate_similarity
 
-# --- Page Configuration ---
 st.set_page_config(
     page_title="AI Resume Matcher",
     page_icon="🤖",
