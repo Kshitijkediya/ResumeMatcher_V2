@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
-# --- Page Configuration ---
 st.set_page_config(
     page_title="Results Dashboard",
     page_icon="📊",
