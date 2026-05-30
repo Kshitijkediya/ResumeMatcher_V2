@@ -8,7 +8,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- Helper Functions ---
 def create_skill_donut_chart(matching_skills, missing_skills):
     """Creates a donut chart visualizing the skill match."""
     labels = ['Matching Skills', 'Missing Skills']
