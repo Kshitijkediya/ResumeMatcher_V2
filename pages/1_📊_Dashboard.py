@@ -28,7 +28,6 @@ def create_skill_donut_chart(matching_skills, missing_skills):
 
 def display_skills(skill_list, color):
     """Displays a list of skills as colored buttons."""
-    # The CSS is injected to style the buttons to look like tags
     st.markdown(f"""
         <style>
             .skill-tag {{
