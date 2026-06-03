@@ -10,7 +10,6 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
-# --- Session State Initialization ---
 if 'job_description' not in st.session_state:
     st.session_state.job_description = ""
 if 'job_skills' not in st.session_state:
