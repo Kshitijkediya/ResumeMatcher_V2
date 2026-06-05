@@ -51,7 +51,6 @@ def display_skills(skill_list, color):
     st.markdown(html_skills, unsafe_allow_html=True)
 
 
-# --- Main Dashboard Logic ---
 st.title("📊 Results Dashboard")
 
 # Check if analysis has been run
