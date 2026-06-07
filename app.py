@@ -37,7 +37,6 @@ uploaded_files = st.file_uploader(
     accept_multiple_files=True
 )
 
-# --- Processing Logic ---
 if st.button("Analyze Resumes", type="primary", use_container_width=True):
     if not job_description_input:
         st.warning("Please paste a job description.")
