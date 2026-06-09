@@ -44,7 +44,6 @@ if st.button("Analyze Resumes", type="primary", use_container_width=True):
         st.warning("Please upload at least one resume.")
     else:
         with st.spinner("Analyzing... This may take a moment."):
-            # Store job description in session state
             st.session_state.job_description = job_description_input
             
             # --- DYNAMIC SKILL LOGIC ---
