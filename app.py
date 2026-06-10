@@ -46,7 +46,6 @@ if st.button("Analyze Resumes", type="primary", use_container_width=True):
         with st.spinner("Analyzing... This may take a moment."):
             st.session_state.job_description = job_description_input
             
-            # --- DYNAMIC SKILL LOGIC ---
             # 1. Extract skills from the job description text
             jd_skills = set(extract_skills(st.session_state.job_description))
             
