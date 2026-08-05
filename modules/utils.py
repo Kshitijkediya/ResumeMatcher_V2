@@ -3,7 +3,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import spacy
 import string
 
-# Load the spaCy model for text preprocessing
+# Load spaCy model for text preprocessing
 try:
     nlp = spacy.load("en_core_web_sm")
 except OSError:
