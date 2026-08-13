@@ -3,7 +3,6 @@ import spacy
 import docx
 import fitz  
 
-# Load the spaCy model once
 try:
     nlp = spacy.load("en_core_web_sm")
 except OSError:
