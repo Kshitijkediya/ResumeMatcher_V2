@@ -9,11 +9,11 @@ st.set_page_config(
 )
 
 def create_skill_donut_chart(matching_skills, missing_skills):
-    """Creates a donut chart visualizing the skill match."""
+    # Donut Chart
     labels = ['Matching Skills', 'Missing Skills']
     values = [len(matching_skills), len(missing_skills)]
     
-    if sum(values) == 0: # Handle case with no skills in JD
+    if sum(values) == 0: # No JD case
         return None
         
     fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.5,
